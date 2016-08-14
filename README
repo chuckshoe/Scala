@@ -1,0 +1,15 @@
+first.scala : Simple Scala program illustrating the use of singleton class
+  
+lambda.scala : Simple Scala program illustrating anonymous functions (lambda's)
+
+functionsubtyping.scala : Scala program illustrating function subtyping
+    
+second.scala : Scala program illustrating derivation and subtyping
+    
+pattern.scala : Scala program illustrating case classes and pattern matching
+    
+tree.scala : Scala program illustrating bounded generic type parameters.
+    
+variant.scala : Scala program illustrating covariant subtyping and bounded generic type parameter
+    
+contravariance.scala : Scala program illustrating contravariant subtyping on generics. 

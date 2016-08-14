@@ -1,0 +1,127 @@
+(501\)% scala
+Welcome to Scala version 2.11.4 (Java HotSpot(TM) 64-Bit Server VM, Java 1.6.0_65).
+Type in expressions to have them evaluated.
+Type :help for more information.
+
+scala> class A
+defined class A
+
+scala> class B extends A
+defined class B
+
+scala> def f(x:A) = 6
+f: (x: A)Int
+
+scala> def g(x:B) = 7
+g: (x: B)Int
+
+scala> def h(k:B=>Int) = k(new B())
+h: (k: B => Int)Int
+
+scala> h(g)
+res0: Int = 7
+
+scala> h(f)
+res1: Int = 6
+
+scala> def m(k:A=>Int) = k(new A())
+m: (k: A => Int)Int
+
+scala> m(g)
+<console>:12: error: type mismatch;
+ found   : B => Int
+ required: A => Int
+              m(g)
+                ^
+
+scala> // Here's a lambda expression
+
+scala> (x:Int)=>x+1
+res3: Int => Int = <function1>
+
+//Type ^d to exit
+scala> :quit
+
+(501\)% scala
+Welcome to Scala version 2.11.4 (Java HotSpot(TM) 64-Bit Server VM, Java 1.6.0_65).
+Type in expressions to have them evaluated.
+Type :help for more information.
+
+scala> class A
+defined class A
+
+scala> class B extends A
+defined class B
+
+//No subtyping on instances of generic classes, unless the 
+//programmer specifically indicates covariant subtyping
+//(using C[+T]) or contravariant subtyping (using C[-T]).
+
+scala> class C[T]
+defined class C
+
+scala> def f(x:C[A]) = 6
+f: (x: C[A])Int
+
+scala> f(new C[A]())
+res0: Int = 6
+
+//Try to pass a C[B] to a function expecting a C[A]
+scala> f(new C[B]())
+<console>:12: error: type mismatch;
+ found   : C[B]
+ required: C[A]
+Note: B <: A, but class C is invariant in type T.
+You may wish to define T as +T instead. (SLS 4.5)
+              f(new C[B]())
+                ^
+
+//Instead, define a covariantly subtyped generic class.
+scala> class C[+T]
+defined class C
+
+scala> def f(x:C[A]) = 6
+f: (x: C[A])Int
+
+scala> f(new C[A]())
+res2: Int = 6
+
+////Try to pass a C[B] to a function expecting a C[A] - it works.
+scala> f(new C[B]())
+res3: Int = 6
+
+// Define a contravariantly subtyped generic class D
+scala> class D[-T]
+defined class D
+
+scala> def g(x:D[B]) = 6
+g: (x: D[B])Int
+
+//Try to pass a D[A] to a function expecting a D[B] -- it works.
+scala> g(new D[A]())
+res4: Int = 6
+
+//It can be tricky to define methods of a covariantly or contravariantly
+//subtyped generic class. 
+
+// The problem here is the a function input type is in "contravariant position",
+// so that the covariant type parameter T cannot be the input type of a method.
+scala> class E[+T] {
+     |    def m(x:T) = 6
+     | }
+<console>:8: error: covariant type T occurs in contravariant position in type T of value x
+          def m(x:T) = 6
+                ^
+
+//It's fine to have the covariant type parameter T as the return type of a method.
+scala> class E[+T](x:T) {
+     |    def m() = x
+     | }
+defined class E
+
+// Here, since T is the contravariant type parameter, T can be the input type of
+// a method.
+scala> class F[-T] {
+     |    def m(x:T) = 6
+     | }
+defined class F
